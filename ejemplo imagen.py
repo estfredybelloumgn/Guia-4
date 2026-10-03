@@ -86,9 +86,11 @@ frame9.place(x=140,y=145,width=820,height=5)
 frame10=tk.Frame(ventana,bg='yellow')
 frame10.place(x=140,y=65,width=820,height=5)
 
-boton1=tk.Button(text="Start",font=("arial",15))
-boton1.place(x=0,y=820,width=70,height=30)
+boton1=tk.Button(text="Start",font=("arial",12),bg='green')
+boton1.place(x=0,y=810,width=70,height=30)
 
+boton2=tk.Button(text="Re start",font=("arial",12),bg='blue')
+boton2.place(x=0,y=850,width=70,height=30)
 
 ventana.mainloop()
 
