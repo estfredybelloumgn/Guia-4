@@ -1,0 +1,363 @@
+import tkinter as tk
+import threading
+import random
+import time
+
+
+class Carrera:
+
+    def __init__(self, ventana):
+
+        self.ventana = ventana
+
+        self.ventana.title("Carrera de vehículos")
+        self.ventana.geometry("1000x1200")
+        self.ventana.config(bg="white")
+
+        self.carrera_iniciada = False
+        self.carrera_terminada = False
+
+        self.numero_vueltas = 1
+        self.vehiculo_apostado = 1
+
+        self.tiempos = []
+        self.temporizadores = []
+        self.vueltas = []
+
+        self.crear_interfaz()
+
+    def crear_interfaz(self):
+
+        self.titulo = tk.Label(self.ventana,text="Carrera de vehículos",font=("Arial", 22),bg="white")
+        self.titulo.place(x=350, y=10)
+
+        texto_apuesta = tk.Label(self.ventana,text="Vehículo apostado:",font=("Arial", 12),bg="white")
+        texto_apuesta.place(x=10, y=850)
+
+        self.entrada_apuesta = tk.Entry(self.ventana,width=5)
+        self.entrada_apuesta.place(x=150, y=850)
+
+        self.entrada_apuesta.insert(0, "1")
+
+        texto_vueltas = tk.Label( self.ventana,text="Número de vueltas:",font=("Arial", 12),bg="white")
+        texto_vueltas.place(x=250, y=850)
+
+        self.entrada_vueltas = tk.Entry(self.ventana,width=5)
+        self.entrada_vueltas.place(x=390, y=850)
+
+        self.entrada_vueltas.insert(0, "1")
+
+        texto_velocidad = tk.Label(self.ventana,text="Velocidad:",font=("Arial", 12),bg="white")
+        texto_velocidad.place(x=480, y=850)
+
+        self.slider = tk.Scale(self.ventana,from_=1,to=10,orient="horizontal",length=150)
+        self.slider.set(5)
+        self.slider.place(x=560, y=825)
+
+        self.boton_iniciar = tk.Button(self.ventana,text="Start",font=("Arial", 15),command=self.iniciar_carrera)
+        self.boton_iniciar.place(x=750,y=820,width=100,height=40)
+
+        self.boton_reiniciar = tk.Button(self.ventana,text="Reiniciar",font=("Arial", 15),command=self.reiniciar_carrera)
+        self.boton_reiniciar.place(x=860,y=820,width=110,height=40)
+
+        self.mensaje = tk.Label(self.ventana,text="",font=("Arial", 12),bg="white")
+        self.mensaje.place(x=300, y=900)
+
+        self.resultados = tk.Label(self.ventana,text="",font=("Arial", 12),justify="left",bg="white")
+        self.resultados.place(x=350, y=940)
+
+        self.crear_pista()
+
+    def crear_pista(self):
+
+        self.imagen1 = tk.PhotoImage(file="carritoblanco.png")
+        self.imagen2 = tk.PhotoImage(file="carritoazul.png")
+        self.imagen3 = tk.PhotoImage(file="carritoamarillo.png")
+        self.imagen4 = tk.PhotoImage(file="carritorojo.png")
+        self.imagen5 = tk.PhotoImage(file="carritobeage.png")
+        self.imagen6 = tk.PhotoImage(file="carritonegro.png")
+        self.imagen7 = tk.PhotoImage(file="carritoverde.png")
+        self.imagen8 = tk.PhotoImage(file="carritonaranja.png")
+        self.imagen9 = tk.PhotoImage(file="carritomorado.png")
+        self.imagen10 = tk.PhotoImage(file="carritoneon.png")
+
+        self.imagen_inicio = tk.PhotoImage(file="inicio.png")
+        self.imagen_fin = tk.PhotoImage(file="fin.png")
+
+        self.vehiculo1 = tk.Label(self.ventana,image=self.imagen1)
+        self.vehiculo1.place(x=0, y=0)
+
+        self.vehiculo2 = tk.Label(self.ventana,image=self.imagen2)
+        self.vehiculo2.place(x=0, y=80)
+
+        self.vehiculo3 = tk.Label(self.ventana,image=self.imagen3)
+        self.vehiculo3.place(x=0, y=160)
+
+        self.vehiculo4 = tk.Label(self.ventana,image=self.imagen4)
+        self.vehiculo4.place(x=0, y=240)
+
+        self.vehiculo5 = tk.Label(self.ventana,image=self.imagen5)
+        self.vehiculo5.place(x=0, y=320)
+
+        self.vehiculo6 = tk.Label(self.ventana,image=self.imagen6)
+        self.vehiculo6.place(x=0, y=400)
+
+        self.vehiculo7 = tk.Label(self.ventana,image=self.imagen7)
+        self.vehiculo7.place(x=0, y=480)
+
+        self.vehiculo8 = tk.Label(self.ventana,image=self.imagen8)
+        self.vehiculo8.place(x=0, y=560)
+
+        self.vehiculo9 = tk.Label(self.ventana,image=self.imagen9)
+        self.vehiculo9.place(x=0, y=640)
+
+        self.vehiculo10 = tk.Label(self.ventana,image=self.imagen10)
+        self.vehiculo10.place(x=0, y=720)
+
+        self.marca_inicio = tk.Label(self.ventana,image=self.imagen_inicio)
+        self.marca_inicio.place(x=95, y=0)
+
+        self.marca_fin = tk.Label(self.ventana,image=self.imagen_fin)
+        self.marca_fin.place(x=960, y=0)
+
+        self.linea_principal = tk.Frame(self.ventana,bg="black")
+        self.linea_principal.place(x=0,y=800,width=1000,height=10)
+
+        self.linea1 = tk.Frame(self.ventana,bg="yellow")
+        self.linea1.place(x=140,y=65,width=820,height=5)
+
+        self.linea2 = tk.Frame(self.ventana,bg="yellow")
+        self.linea2.place(x=140,y=145,width=820,height=5)
+
+        self.linea3 = tk.Frame(self.ventana,bg="yellow")
+        self.linea3.place(x=140,y=225,width=820,height=5)
+
+        self.linea4 = tk.Frame(self.ventana,bg="yellow")
+        self.linea4.place(x=140,y=305,width=820,height=5)
+
+        self.linea5 = tk.Frame(self.ventana,bg="yellow")
+        self.linea5.place(x=140,y=385,width=820,height=5)
+
+        self.linea6 = tk.Frame(self.ventana,bg="yellow")
+        self.linea6.place(x=140,y=465,width=820,height=5)
+
+        self.linea7 = tk.Frame(self.ventana,bg="yellow")
+        self.linea7.place(x=140,y=545,width=820,height=5)
+
+        self.linea8 = tk.Frame(self.ventana,bg="yellow")
+        self.linea8.place(x=140,y=625,width=820,height=5)
+
+        self.linea9 = tk.Frame(self.ventana,bg="yellow")
+        self.linea9.place(x=140,y=705,width=820,height=5)
+
+        self.vehiculos = [self.vehiculo1,self.vehiculo2,self.vehiculo3,self.vehiculo4,self.vehiculo5,self.vehiculo6,self.vehiculo7,self.vehiculo8,self.vehiculo9,self.vehiculo10]
+
+    def iniciar_carrera(self):
+        if self.carrera_iniciada:
+            return
+        try:
+            self.vehiculo_apostado = int(self.entrada_apuesta.get())
+            self.numero_vueltas = int(self.entrada_vueltas.get())
+
+            if self.vehiculo_apostado < 1:
+                self.mensaje.config(text="El vehículo debe estar entre 1 y 10")
+                return
+
+            if self.vehiculo_apostado > 10:
+                self.mensaje.config(text="El vehículo debe estar entre 1 y 10")
+                return
+
+            if self.numero_vueltas <= 0:
+                self.mensaje.config(text="Las vueltas deben ser mayores que cero")
+                return
+
+        except:
+
+            self.mensaje.config(text="Ingrese números válidos")
+            return
+
+        self.carrera_iniciada = True
+        self.carrera_terminada = False
+
+        self.tiempos = [None] * 10
+        self.temporizadores = [None] * 10
+        self.vueltas = [0] * 10
+
+        self.tiempo_inicio = time.time()
+
+        self.mensaje.config(text="La carrera ha comenzado")
+
+        self.resultados.config(text="")
+
+        for i in range(10):
+            self.iniciar_temporizador(i)
+
+    def iniciar_temporizador(self, numero):
+
+        velocidad = self.slider.get()
+
+        tiempo_minimo = 30
+        tiempo_maximo = 150
+
+        tiempo = random.randint(tiempo_minimo,tiempo_maximo)
+
+        tiempo = tiempo - (velocidad * 5)
+
+        if tiempo < 10:
+            tiempo = 10
+
+        self.temporizadores[numero] = threading.Timer(tiempo / 1000,self.mover_vehiculo,args=(numero,))
+
+        self.temporizadores[numero].start()
+
+    def mover_vehiculo(self, numero):
+
+        if self.carrera_terminada:
+            return
+
+        vehiculo = self.vehiculos[numero]
+        posicion_actual = vehiculo.winfo_x()
+        nuevo_x = posicion_actual + 5
+
+        if nuevo_x >= 900:
+            nuevo_x = 0
+
+            self.vueltas[numero] = (self.vueltas[numero] + 1)
+
+        vehiculo.place(x=nuevo_x)
+
+        if self.vueltas[numero] >= self.numero_vueltas:
+            self.finalizar_vehiculo(numero)
+        else:
+            self.iniciar_temporizador(numero)
+
+    def finalizar_vehiculo(self, numero):
+        if self.tiempos[numero] is None:
+            self.tiempos[numero] = (time.time() - self.tiempo_inicio)
+
+        cantidad_terminados = 0
+
+        for tiempo in self.tiempos:
+
+            if tiempo is not None:
+                cantidad_terminados + 1
+                )
+
+        if cantidad_terminados == 10:
+
+            self.finalizar_carrera()
+
+    def finalizar_carrera(self):
+
+        self.carrera_terminada = True
+        self.carrera_iniciada = False
+
+        for temporizador in self.temporizadores:
+
+            if temporizador is not None:
+                temporizador.cancel()
+
+        resultados = []
+
+        for i in range(10):
+
+            resultados.append(
+                (
+                    self.tiempos[i],
+                    i + 1
+                )
+            )
+
+        resultados.sort()
+
+        texto = "RESULTADOS FINALES
+
+"
+
+        posicion = 1
+
+        for tiempo, vehiculo in resultados:
+
+            texto = texto + (
+                str(posicion)
+                + ". Vehículo "
+                + str(vehiculo)
+                + " - "
+                + str(round(tiempo, 2))
+                + " segundos
+"
+            )
+
+            posicion = posicion + 1
+
+        ganador = resultados[0][1]
+
+        if ganador == self.vehiculo_apostado:
+
+            texto = texto + "
+¡Ganaste la apuesta!"
+
+        else:
+
+            texto = texto + (
+                "
+No ganaste. El ganador fue el vehículo "
+                + str(ganador)
+            )
+
+        self.resultados.config(
+            text=texto
+        )
+
+        self.mensaje.config(
+            text="La carrera terminó"
+        )
+
+    def reiniciar_carrera(self):
+
+        for temporizador in self.temporizadores:
+
+            if temporizador is not None:
+                temporizador.cancel()
+
+        self.carrera_iniciada = False
+        self.carrera_terminada = False
+
+        self.tiempos = [None] * 10
+        self.temporizadores = [None] * 10
+        self.vueltas = [0] * 10
+
+        posiciones_y = [
+            0,
+            80,
+            160,
+            240,
+            320,
+            400,
+            480,
+            560,
+            640,
+            720
+        ]
+
+        for i in range(10):
+
+            self.vehiculos[i].place(
+                x=0,
+                y=posiciones_y[i]
+            )
+
+        self.mensaje.config(
+            text=""
+        )
+
+        self.resultados.config(
+            text=""
+        )
+
+
+ventana = tk.Tk()
+
+objeto = Carrera(ventana)
+
+ventana.mainloop()
