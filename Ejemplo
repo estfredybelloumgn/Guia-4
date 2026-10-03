@@ -240,11 +240,9 @@ class Carrera:
         for tiempo in self.tiempos:
 
             if tiempo is not None:
-                cantidad_terminados + 1
-                )
+                cantidad_terminados = (cantidad_terminados + 1)
 
         if cantidad_terminados == 10:
-
             self.finalizar_carrera()
 
     def finalizar_carrera(self):
@@ -253,70 +251,37 @@ class Carrera:
         self.carrera_iniciada = False
 
         for temporizador in self.temporizadores:
-
             if temporizador is not None:
                 temporizador.cancel()
 
         resultados = []
 
         for i in range(10):
-
-            resultados.append(
-                (
-                    self.tiempos[i],
-                    i + 1
-                )
-            )
+            resultados.append((self.tiempos[i],i + 1))
 
         resultados.sort()
 
-        texto = "RESULTADOS FINALES
-
-"
-
+        texto = "RESULTADOS FINALES"
         posicion = 1
 
         for tiempo, vehiculo in resultados:
-
-            texto = texto + (
-                str(posicion)
-                + ". Vehículo "
-                + str(vehiculo)
-                + " - "
-                + str(round(tiempo, 2))
-                + " segundos
-"
-            )
-
+            texto = texto + ( str(posicion)+ ". Vehículo "+ str(vehiculo)+ " - "+ str(round(tiempo, 2))+ " segundos")
             posicion = posicion + 1
 
         ganador = resultados[0][1]
 
         if ganador == self.vehiculo_apostado:
-
-            texto = texto + "
-¡Ganaste la apuesta!"
-
+            texto = texto + "¡Ganaste la apuesta!"
         else:
+            texto = texto + ( "No ganaste. El ganador fue el vehículo "+ str(ganador))
 
-            texto = texto + (
-                "
-No ganaste. El ganador fue el vehículo "
-                + str(ganador)
-            )
+        self.resultados.config(text=texto)
 
-        self.resultados.config(
-            text=texto
-        )
-
-        self.mensaje.config(
-            text="La carrera terminó"
-        )
+        self.mensaje.config(text="La carrera terminó")
 
     def reiniciar_carrera(self):
 
         for temporizador in self.temporizadores:
-
             if temporizador is not None:
                 temporizador.cancel()
 
@@ -327,37 +292,16 @@ No ganaste. El ganador fue el vehículo "
         self.temporizadores = [None] * 10
         self.vueltas = [0] * 10
 
-        posiciones_y = [
-            0,
-            80,
-            160,
-            240,
-            320,
-            400,
-            480,
-            560,
-            640,
-            720
-        ]
+        posiciones_y = [0,80,160,240,320,400,480,560,640,720]
 
         for i in range(10):
+            self.vehiculos[i].place(x=0,y=posiciones_y[i])
 
-            self.vehiculos[i].place(
-                x=0,
-                y=posiciones_y[i]
-            )
-
-        self.mensaje.config(
-            text=""
-        )
-
-        self.resultados.config(
-            text=""
-        )
+        self.mensaje.config(text="")
+        self.resultados.config(text="")
 
 
 ventana = tk.Tk()
-
 objeto = Carrera(ventana)
 
 ventana.mainloop()
