@@ -136,7 +136,6 @@ class Carrera:
     self.mensaje.config(text="La carrera ha comenzado", bg="green")
     self.resultados.config(text="")
 
-    # Crear e iniciar un hilo independiente por cada vehículo (Requisito de la guía)
     for i in range(10):
       hilo = threading.Thread(target=self.ciclo_vehiculo, args=(i,))
       self.hilos.append(hilo)
