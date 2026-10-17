@@ -12,7 +12,7 @@ class Carrera:
 
         self.ventana.title("Carrera de vehículos")
         self.ventana.geometry("1000x1200")
-        self.ventana.config(bg="white")
+        self.ventana.config(bg="gold")
 
         self.carrera_iniciada = False
         self.carrera_terminada = False
@@ -28,43 +28,44 @@ class Carrera:
 
     def crear_interfaz(self):
 
-        self.titulo = tk.Label(self.ventana,text="Carrera de vehículos",font=("Arial", 22),bg="white")
-        self.titulo.place(x=350, y=10)
 
-        texto_apuesta = tk.Label(self.ventana,text="Vehículo apostado:",font=("Arial", 12),bg="white")
-        texto_apuesta.place(x=10, y=850)
+        self.titulo = tk.Label(self.ventana,text="COPA PISTON !!PRIMERA EDICION¡¡",font=("Arial", 22),bg="gold")
+        self.titulo.place(x=300, y=10)
 
-        self.entrada_apuesta = tk.Entry(self.ventana,width=5)
-        self.entrada_apuesta.place(x=150, y=850)
+        texto_apuesta = tk.Label(self.ventana,text="Vehículo apostado:",font=("Arial", 12),bg="gold")
+        texto_apuesta.place(x=10, y=790)
+
+        self.entrada_apuesta = tk.Entry(self.ventana,width=5,bg='blue')
+        self.entrada_apuesta.place(x=150, y=790)
 
         self.entrada_apuesta.insert(0, "1")
 
-        texto_vueltas = tk.Label( self.ventana,text="Número de vueltas:",font=("Arial", 12),bg="white")
-        texto_vueltas.place(x=250, y=850)
+        texto_vueltas = tk.Label( self.ventana,text="Número de vueltas:",font=("Arial", 12),bg="gold")
+        texto_vueltas.place(x=250, y=790)
 
-        self.entrada_vueltas = tk.Entry(self.ventana,width=5)
-        self.entrada_vueltas.place(x=390, y=850)
+        self.entrada_vueltas = tk.Entry(self.ventana,width=5,bg='blue')
+        self.entrada_vueltas.place(x=390, y=790)
 
         self.entrada_vueltas.insert(0, "1")
 
-        texto_velocidad = tk.Label(self.ventana,text="Velocidad:",font=("Arial", 12),bg="white")
-        texto_velocidad.place(x=480, y=850)
+        texto_velocidad = tk.Label(self.ventana,text="Velocidad:",font=("Arial", 12),bg="gold")
+        texto_velocidad.place(x=480, y=790)
 
-        self.slider = tk.Scale(self.ventana,from_=1,to=10,orient="horizontal",length=150)
-        self.slider.set(5)
-        self.slider.place(x=560, y=825)
+        self.slider = tk.Scale(self.ventana,from_=1,to=10,orient="horizontal",length=150,bg='pink')
+        self.slider.set('5')
+        self.slider.place(x=560, y=790)
 
-        self.boton_iniciar = tk.Button(self.ventana,text="Start",font=("Arial", 15),command=self.iniciar_carrera)
-        self.boton_iniciar.place(x=750,y=820,width=100,height=40)
+        self.boton_iniciar = tk.Button(self.ventana,text="Start",font=("Arial", 15),command=self.iniciar_carrera,bg='green')
+        self.boton_iniciar.place(x=750,y=790,width=100,height=40)
 
-        self.boton_reiniciar = tk.Button(self.ventana,text="Reiniciar",font=("Arial", 15),command=self.reiniciar_carrera)
-        self.boton_reiniciar.place(x=860,y=820,width=110,height=40)
+        self.boton_reiniciar = tk.Button(self.ventana,text="Reiniciar",font=("Arial", 15),command=self.reiniciar_carrera,bg='blue')
+        self.boton_reiniciar.place(x=860,y=790,width=110,height=40)
 
-        self.mensaje = tk.Label(self.ventana,text="",font=("Arial", 12),bg="white")
-        self.mensaje.place(x=300, y=900)
+        self.mensaje = tk.Label(self.ventana,text="La carrera esta por iniciar",font=("Arial", 12),bg="gold")
+        self.mensaje.place(x=750, y=860)
 
-        self.resultados = tk.Label(self.ventana,text="",font=("Arial", 12),justify="left",bg="white")
-        self.resultados.place(x=350, y=940)
+        self.resultados = tk.Label(self.ventana,text="Ranking",font=("Arial", 7),bg="gold")
+        self.resultados.place(x=10, y=810)
 
         self.crear_pista()
 
@@ -121,7 +122,7 @@ class Carrera:
         self.marca_fin.place(x=960, y=0)
 
         self.linea_principal = tk.Frame(self.ventana,bg="black")
-        self.linea_principal.place(x=0,y=800,width=1000,height=10)
+        self.linea_principal.place(x=0,y=780,width=1000,height=10)
 
         self.linea1 = tk.Frame(self.ventana,bg="yellow")
         self.linea1.place(x=140,y=65,width=820,height=5)
@@ -185,7 +186,7 @@ class Carrera:
 
         self.tiempo_inicio = time.time()
 
-        self.mensaje.config(text="La carrera ha comenzado")
+        self.mensaje.config(text="La carrera ha comenzado",bg='green')
 
         self.resultados.config(text="")
 
@@ -261,11 +262,11 @@ class Carrera:
 
         resultados.sort()
 
-        texto = "RESULTADOS FINALES"
+        texto = "RESULTADOS FINALES\n"
         posicion = 1
 
         for tiempo, vehiculo in resultados:
-            texto = texto + ( str(posicion)+ ". Vehículo "+ str(vehiculo)+ " - "+ str(round(tiempo, 2))+ " segundos")
+            texto = texto + ( str(posicion)+ ". Vehículo "+ str(vehiculo)+ " - "+ str(round(tiempo, 2))+ " segundos\n")
             posicion = posicion + 1
 
         ganador = resultados[0][1]
@@ -277,7 +278,7 @@ class Carrera:
 
         self.resultados.config(text=texto)
 
-        self.mensaje.config(text="La carrera terminó")
+        self.mensaje.config(text="La carrera terminó",bg='red')
 
     def reiniciar_carrera(self):
 

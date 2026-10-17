@@ -43,83 +43,38 @@ class Carrera:
         self.ventana.after(30, self.actualizar_pantalla)
 
     def crear_interfaz(self):
-        tk.Label(
-            self.ventana,
-            text="Carrera de vehículos",
-            font=("Arial", 22),
-            bg="white"
-        ).place(x=340, y=10)
+        tk.Label(self.ventana,text="Carrera de vehículos",font=("Arial", 22),bg="white").place(x=340, y=10)
 
         self.crear_pista()
 
-        tk.Label(
-            self.ventana,
-            text="Apostar por vehículo:",
-            bg="white"
-        ).place(x=20, y=520)
+        tk.Label(self.ventana,text="Apostar por vehículo:",bg="white").place(x=20, y=520)
 
         self.entrada_apuesta = tk.Entry(self.ventana, width=5)
         self.entrada_apuesta.place(x=155, y=520)
         self.entrada_apuesta.insert(0, "1")
 
-        tk.Label(
-            self.ventana,
-            text="Rondas:",
-            bg="white"
-        ).place(x=220, y=520)
+        tk.Label(self.ventana,text="Rondas:",bg="white").place(x=220, y=520)
 
         self.entrada_vueltas = tk.Entry(self.ventana, width=5)
         self.entrada_vueltas.place(x=280, y=520)
         self.entrada_vueltas.insert(0, "1")
 
-        tk.Label(
-            self.ventana,
-            text="Velocidad general:",
-            bg="white"
-        ).place(x=350, y=520)
+        tk.Label(self.ventana,text="Velocidad general:",bg="white").place(x=350, y=520)
 
-        self.slider = tk.Scale(
-            self.ventana,
-            from_=0.5,
-            to=3.0,
-            resolution=0.1,
-            orient="horizontal",
-            length=180,
-            command=self.cambiar_velocidad
-        )
+        self.slider = tk.Scale(self.ventana,from_=0.5,to=3.0, resolution=0.1, orient="horizontal", length=180, command=self.cambiar_velocidad)
         self.slider.set(1.0)
         self.slider.place(x=470, y=495)
 
-        self.boton_iniciar = tk.Button(
-            self.ventana,
-            text="Iniciar",
-            command=self.iniciar_carrera,
-            width=12
-        )
+        self.boton_iniciar = tk.Button(self.ventana,text="Iniciar", command=self.iniciar_carrera, width=12)
         self.boton_iniciar.place(x=690, y=515)
 
-        self.boton_reiniciar = tk.Button(
-            self.ventana,
-            text="Reiniciar",
-            command=self.reiniciar_carrera,
-            width=12
-        )
+        self.boton_reiniciar = tk.Button(self.ventana,text="Reiniciar",command=self.reiniciar_carrera,width=12)
         self.boton_reiniciar.place(x=810, y=515)
 
-        self.mensaje = tk.Label(
-            self.ventana,
-            text="Una ronda equivale a una ida y una vuelta.",
-            font=("Arial", 11),
-            bg="white"
-        )
+        self.mensaje = tk.Label(self.ventana,text="Una ronda equivale a una ida y una vuelta.",font=("Arial", 11), bg="white")
         self.mensaje.place(x=20, y=565)
 
-        self.resultados = ttk.Treeview(
-            self.ventana,
-            columns=("puesto", "vehiculo", "tiempo"),
-            show="headings",
-            height=10
-        )
+        self.resultados = ttk.Treeview(self.ventana,columns=("puesto", "vehiculo", "tiempo"), show="headings",height=10)
 
         self.resultados.heading("puesto", text="Puesto")
         self.resultados.heading("vehiculo", text="Vehículo")
@@ -145,57 +100,30 @@ class Carrera:
             "carritoneon.png"
         ]
 
-        tk.Label(
-            self.ventana, text="SALIDA", bg="white"
-        ).place(x=self.salida, y=50)
+        tk.Label(self.ventana, text="SALIDA", bg="white").place(x=self.salida, y=50)
 
-        tk.Label(
-            self.ventana, text="META", bg="white"
-        ).place(x=self.meta, y=50)
+        tk.Label(self.ventana, text="META", bg="white").place(x=self.meta, y=50)
 
         for i in range(10):
             y = 80 + i * 42
 
-            tk.Label(
-                self.ventana,
-                text=f"Carro {i + 1}",
-                bg="white"
-            ).place(x=10, y=y + 5)
+            tk.Label(self.ventana,text=f"Carro {i + 1}",bg="white").place(x=10, y=y + 5)
 
             linea = tk.Frame(self.ventana, bg="gray")
-            linea.place(
-                x=self.salida,
-                y=y + 34,
-                width=self.meta - self.salida + 65,
-                height=2
-            )
+            linea.place(x=self.salida, y=y + 34,width=self.meta - self.salida + 65, height=2)
 
             imagen = tk.PhotoImage(file=archivos[i])
 
-            # Reducir imágenes grandes sin instalar otras librerías.
-            factor = max(
-                1,
-                (imagen.width() + 59) // 60,
-                (imagen.height() + 29) // 30
-            )
+            factor = max(1,(imagen.width() + 59) // 60,(imagen.height() + 29) // 30)
             imagen = imagen.subsample(factor, factor)
 
             self.imagenes.append(imagen)
 
-            vehiculo = tk.Label(
-                self.ventana,
-                image=imagen,
-                bg="white",
-                borderwidth=0
-            )
+            vehiculo = tk.Label(self.ventana,image=imagen,bg="white",borderwidth=0)
             vehiculo.place(x=self.salida, y=y)
             self.vehiculos.append(vehiculo)
 
-            etiqueta = tk.Label(
-                self.ventana,
-                text="0 rondas",
-                bg="white"
-            )
+            etiqueta = tk.Label(self.ventana,text="0 rondas",bg="white")
             etiqueta.place(x=955, y=y + 5)
             self.etiquetas_vueltas.append(etiqueta)
 
@@ -212,21 +140,15 @@ class Carrera:
             rondas = int(self.entrada_vueltas.get())
 
             if apuesta < 1 or apuesta > 10:
-                self.mensaje.config(
-                    text="El vehículo debe estar entre 1 y 10."
-                )
+                self.mensaje.config(text="El vehículo debe estar entre 1 y 10.")
                 return
 
             if rondas <= 0:
-                self.mensaje.config(
-                    text="Las rondas deben ser mayores que cero."
-                )
+                self.mensaje.config(text="Las rondas deben ser mayores que cero.")
                 return
 
         except ValueError:
-            self.mensaje.config(
-                text="Ingrese números enteros válidos."
-            )
+            self.mensaje.config(text="Ingrese números enteros válidos.")
             return
 
         self.vehiculo_apostado = apuesta
@@ -247,15 +169,10 @@ class Carrera:
         self.hilos = []
 
         for i in range(10):
-            hilo = threading.Thread(
-                target=self.mover_vehiculo,
-                args=(i,),
-                name=f"Carro-{i + 1}"
-            )
+            hilo = threading.Thread(target=self.mover_vehiculo,args=(i,),name=f"Carro-{i + 1}")
             self.hilos.append(hilo)
             hilo.start()
 
-        # Todos usan el mismo instante inicial.
         self.tiempo_inicio = time.perf_counter()
         self.salida_carrera.set()
 
@@ -297,13 +214,9 @@ class Carrera:
                 self.vueltas[numero] = rondas_completadas
 
                 if rondas_completadas >= self.numero_vueltas:
-                    self.tiempos[numero] = (
-                        ahora - self.tiempo_inicio
-                    )
+                    self.tiempos[numero] = (ahora - self.tiempo_inicio)
                     return
 
-            # Esperar sin consumir continuamente el procesador.
-            # También permite reaccionar al reinicio o al cierre.
             self.detener.wait(0.02)
 
     def actualizar_pantalla(self):
@@ -318,9 +231,7 @@ class Carrera:
         for i in range(10):
             self.vehiculos[i].place(x=int(posiciones[i]))
 
-            self.etiquetas_vueltas[i].config(
-                text=f"{vueltas[i]} rondas"
-            )
+            self.etiquetas_vueltas[i].config(text=f"{vueltas[i]} rondas")
 
         if self.carrera_iniciada and not self.reiniciando:
             if all(tiempo is not None for tiempo in tiempos):
@@ -345,20 +256,14 @@ class Carrera:
         for puesto, resultado in enumerate(clasificacion, start=1):
             tiempo, vehiculo = resultado
 
-            self.resultados.insert(
-                "",
-                "end",
-                values=(puesto, vehiculo, f"{tiempo:.3f}")
-            )
+            self.resultados.insert("","end",values=(puesto, vehiculo, f"{tiempo:.3f}"))
 
         ganador = clasificacion[0][1]
 
         if ganador == self.vehiculo_apostado:
             texto = f"¡Ganaste la apuesta! Ganó el carro {ganador}."
         else:
-            texto = (
-                f"No ganaste la apuesta. Ganó el carro {ganador}."
-            )
+            texto = (f"No ganaste la apuesta. Ganó el carro {ganador}.")
 
         self.mensaje.config(text=texto)
 
@@ -404,9 +309,7 @@ class Carrera:
         self.boton_iniciar.config(state="normal")
         self.boton_reiniciar.config(state="normal")
 
-        self.mensaje.config(
-            text="Seleccione su apuesta y el número de rondas."
-        )
+        self.mensaje.config(text="Seleccione su apuesta y el número de rondas.")
 
     def cerrar(self):
         self.cerrando = True
