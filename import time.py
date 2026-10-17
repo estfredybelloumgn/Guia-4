@@ -8,10 +8,10 @@ class Cronometro:
         self.start_time = time.time()
     def stop(self):
         if self.start_time is None:
-    raise ValueError("El cronometro no ha sido iniciado.",)
-    elapsed_time = time.time() - self.start_time
-    self.start_time = None
-return (elapsed_time)
+            raise ValueError("El cronometro no ha sido iniciado.",)
+            elapsed_time = time.time() - self.start_time
+            self.start_time = None
+return elapsed_time
 
 # Uso
 objeto = Cronometro()
