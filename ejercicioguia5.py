@@ -179,7 +179,7 @@ class Carrera:
   def mostrar_resultados(self):
     resultados = sorted([(self.tiempos[i], i + 1) for i in range(10)], key=lambda x: x[0])
 
-    texto = "RESULTADOS FINALES (Ranking):\n"
+    texto = "RESULTADOS FINALES :\n"
     for posicion, (tiempo, vehiculo) in enumerate(resultados, start=1):
       texto += (f"{posicion}. Vehículo {vehiculo} - {round(tiempo, 2)} segundos\n")
 
